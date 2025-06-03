@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STD Self-Testing Trivia Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main id="game-container">
+        <h1>Self-Testing Trivia</h1>
+        <div id="start-screen" class="screen">
+            <p>Test your knowledge and learn about self-testing for STDs like HIV!</p>
+            <button id="start-btn">Start Game</button>
+        </div>
+        <div id="question-screen" class="screen hidden">
+            <p id="question"></p>
+            <ul id="answer-list"></ul>
+            <button id="next-btn" class="hidden">Next</button>
+        </div>
+        <div id="result-screen" class="screen hidden">
+            <p id="score"></p>
+            <p>Remember: regular testing helps you stay informed about your health.</p>
+            <button id="restart-btn">Play Again</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
