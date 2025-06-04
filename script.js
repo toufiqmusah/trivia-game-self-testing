@@ -88,7 +88,8 @@ function showQuestion() {
     const li = document.createElement('li');
     const button = document.createElement('button');
     button.textContent = answer.text;
-    button.addEventListener('click', () => selectAnswer(answer.correct));
+    button.dataset.correct = answer.correct;
+    button.addEventListener('click', () => selectAnswer(button));
     li.appendChild(button);
     answerList.appendChild(li);
   });
@@ -101,12 +102,18 @@ function clearAnswers() {
   }
 }
 
-function selectAnswer(correct) {
-  if (correct) {
+function selectAnswer(selectedBtn) {
+  if (selectedBtn.dataset.correct === 'true') {
     score++;
   }
   Array.from(answerList.children).forEach((li) => {
-    li.firstChild.disabled = true;
+    const btn = li.firstChild;
+    btn.disabled = true;
+    if (btn === selectedBtn) {
+      btn.classList.add(btn.dataset.correct === 'true' ? 'correct' : 'wrong');
+    } else if (btn.dataset.correct === 'true') {
+      btn.classList.add('correct');
+    }
   });
   nextBtn.classList.remove('hidden');
 }
