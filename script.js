@@ -51,6 +51,8 @@ const questionEl = document.getElementById('question');
 const answerList = document.getElementById('answer-list');
 const nextBtn = document.getElementById('next-btn');
 const scoreEl = document.getElementById('score');
+const scoreboardEl = document.getElementById('scoreboard');
+const feedbackEl = document.getElementById('feedback');
 
 document.getElementById('start-btn').addEventListener('click', startGame);
 nextBtn.addEventListener('click', () => {
@@ -64,7 +66,6 @@ nextBtn.addEventListener('click', () => {
 
 document.getElementById('restart-btn').addEventListener('click', () => {
   currentQuestion = 0;
-  score = 0;
   showStart();
 });
 
@@ -72,6 +73,9 @@ function showStart() {
   resultScreen.classList.add('hidden');
   questionScreen.classList.add('hidden');
   startScreen.classList.remove('hidden');
+  score = 0;
+  updateScoreboard();
+  feedbackEl.textContent = '';
 }
 
 function startGame() {
@@ -94,6 +98,7 @@ function showQuestion() {
     answerList.appendChild(li);
   });
   nextBtn.classList.add('hidden');
+  feedbackEl.textContent = '';
 }
 
 function clearAnswers() {
@@ -103,8 +108,14 @@ function clearAnswers() {
 }
 
 function selectAnswer(selectedBtn) {
-  if (selectedBtn.dataset.correct === 'true') {
+  const isCorrect = selectedBtn.dataset.correct === 'true';
+  if (isCorrect) {
     score++;
+    updateScoreboard();
+    showFeedback(true);
+    launchConfetti();
+  } else {
+    showFeedback(false);
   }
   Array.from(answerList.children).forEach((li) => {
     const btn = li.firstChild;
@@ -122,6 +133,29 @@ function showResults() {
   questionScreen.classList.add('hidden');
   scoreEl.textContent = `You scored ${score} out of ${questions.length}!`;
   resultScreen.classList.remove('hidden');
+}
+
+function updateScoreboard() {
+  scoreboardEl.textContent = `Score: ${score}`;
+  scoreboardEl.classList.remove('score-pop');
+  void scoreboardEl.offsetWidth;
+  scoreboardEl.classList.add('score-pop');
+}
+
+function showFeedback(isCorrect) {
+  feedbackEl.textContent = isCorrect ? 'Correct!' : 'Try again!';
+  feedbackEl.className = isCorrect ? 'correct-text feedback-pop' : 'wrong-text feedback-pop';
+}
+
+function launchConfetti() {
+  for (let i = 0; i < 15; i++) {
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+    document.body.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 1500);
+  }
 }
 
 showStart();
